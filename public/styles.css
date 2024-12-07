@@ -74,3 +74,6 @@ th {
 form input{
     margin-bottom: 10px;
 }
+li{
+    cursor: pointer;
+}

@@ -6,7 +6,10 @@ let schemas = [];
 document.addEventListener('DOMContentLoaded', async function () {
     const app = document.getElementById('app');
     app.innerHTML = `
-    <h1>Management System</h1>
+    <h1>CRUDinator</h1>
+    <div id="settings-icon" style="position: absolute; top: 20px; left: 20px; cursor: pointer; font-size: 1.5em;">
+      <i class="fas fa-cog"></i>
+    </div>
     <div id="login-container">
       <form id="login-form">
         <input class="form-control" type="text" id="username" placeholder="Username" required>
@@ -16,19 +19,37 @@ document.addEventListener('DOMContentLoaded', async function () {
     </div>
     <div id="admin-container" style="display: none;">
       <div id="notification" class="notification"></div>
-      <form id="schema-form">
-        <input class="form-control" type="text" id="schema-name" placeholder="Schema Name" required>
-        <div id="fields-container"></div>
-        <button type="button" id="add-field-btn" class="btn btn-success lbtn">Add Field</button>
-        <button type="submit" class="btn btn-primary" style="margin-left: 20px; margin-right: 20px">Save Schema</button>
-      </form>
+      
+      <!-- Bootstrap Modal -->
+      <div class="modal fade" id="schemaModal" tabindex="-1" aria-labelledby="schemaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="schemaModalLabel">Schema Form</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="schema-form">
+                <input class="form-control" type="text" id="schema-name" placeholder="Schema Name" required>
+                <div id="fields-container"></div>
+                <button type="button" id="add-field-btn" class="btn btn-success lbtn">Add Field</button>
+                <button type="submit" class="btn btn-primary" style="margin-left: 20px; margin-right: 20px">Save Schema</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <div id="tabs-container">
         <ul id="tabs-list"></ul>
         <div id="tab-content"></div>
       </div>
     </div>
   `;
-
+  var schemaModal = new bootstrap.Modal(document.getElementById('schemaModal'));
+  document.getElementById('settings-icon').addEventListener('click', function() {
+    schemaModal.show();
+  });
     async function verifyToken() {
         if (!authToken) return false;
         try {
