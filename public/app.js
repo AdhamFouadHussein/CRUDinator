@@ -142,39 +142,52 @@ document.addEventListener('DOMContentLoaded', async function () {
                 text-align: center;
             }
         </style>
-        <h2>${schemaName} Data</h2>
-       <form id="ticket-form">
-            ${fieldsToRender.map(field => `
-                <input type="${field.type || 'text'}" 
-                    class="form-control" 
-                    id="custom_${field.name}"
-                    name="${field.name}"
-                    placeholder="${field.name}"
-                    ${field.required ? 'required' : ''}>
-            `).join('')}
-            <button type="submit" class="btn btn-success lbtn">Save</button>
-            <button type="button" class="btn" id="update-btn" style="display: none;">Update</button>
-        </form>
-        <div class="table-container">
-            <table id="table-${schemaName}" class="table table-striped-columns">
-              <thead> 
-                <tr>
-                  ${fieldsToRender.map(field => `<th>${field.name}</th>`).join('')}
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${documents.map(doc => `
-                  <tr>
-                    ${fieldsToRender.map(field => `<td>${doc[field.name] || ''}</td>`).join('')}
-                    <td>
-                      <button onclick="editRow('${doc._id}', '${schemaName}')" class="btn btn-secondary">Edit</button>
-                      <button onclick="deleteRow('${doc._id}', '${schemaName}')" class="btn btn-danger">Delete</button>
-                    </td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
+        <ul class="nav nav-tabs mb-3">
+            <li class="nav-item">
+                <a class="nav-link active" href="#${schemaName}-form" data-bs-toggle="tab">Add ${schemaName}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#${schemaName}-table" data-bs-toggle="tab">${schemaName} List</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="${schemaName}-form">
+                <form id="ticket-form">
+                    ${fieldsToRender.map(field => `
+                        <input type="${field.type || 'text'}" 
+                            class="form-control mb-2" 
+                            id="custom_${field.name}"
+                            name="${field.name}"
+                            placeholder="${field.name}"
+                            ${field.required ? 'required' : ''}>
+                    `).join('')}
+                    <button type="submit" class="btn btn-success lbtn">Save</button>
+                    <button type="button" class="btn" id="update-btn" style="display: none;">Update</button>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="${schemaName}-table">
+                <div class="table-container">
+                    <table id="table-${schemaName}" class="table table-striped-columns">
+                        <thead> 
+                            <tr>
+                                ${fieldsToRender.map(field => `<th>${field.name}</th>`).join('')}
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${documents.map(doc => `
+                                <tr>
+                                    ${fieldsToRender.map(field => `<td>${doc[field.name] || ''}</td>`).join('')}
+                                    <td>
+                                        <button onclick="editRow('${doc._id}', '${schemaName}')" class="btn btn-secondary">Edit</button>
+                                        <button onclick="deleteRow('${doc._id}', '${schemaName}')" class="btn btn-danger">Delete</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
       `;
 
